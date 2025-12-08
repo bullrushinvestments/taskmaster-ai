@@ -1,0 +1,141 @@
+interface BuildCommand {
+  command: string;
+  output?: string;
+}
+
+interface EnvVariables {
+  [key: string]: string | undefined;
+}
+
+interface HeaderRule {
+  source: string;
+  headers: Array<{ key: string; value: string }>;
+}
+
+interface CacheStrategy {
+  urlPathPattern: string;
+  headers: Array<{ key: string; value: string }>;
+}
+
+interface FrameworkSettings {
+  vercel?: Record<string, any>;
+  netlify?: Record<string, any>;
+}
+
+interface DeployConfig {
+  build: BuildCommand;
+  env: EnvVariables;
+  redirects: Array<{ from: string; to: string; status: number }>;
+  headers: Array<HeaderRule>;
+  cacheStrategies: Array<CacheStrategy>;
+  frameworkSettings: FrameworkSettings;
+}
+
+export const deployConfig: DeployConfig = {
+  build: {
+    command: "next build",
+    output: ".next"
+  },
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_STRIPE_KEY: process.env.NEXT_PUBLIC_STRIPE_KEY
+  },
+  redirects: [
+    { from: "/old-url", to: "/new-url", status: 301 }
+  ],
+  headers: [
+    {
+      source: "/_next/*",
+      headers: [{ key: "Cache-Control", value: "s-maxage=1, stale-while-revalidate=5" }]
+    },
+    { 
+      source: "/*",
+      headers: [{ key: "Referrer-Policy", value: "strict-origin-when-cross-origin" }]
+    }
+  ],
+  cacheStrategies: [
+    {
+      urlPathPattern: "/api/",
+      headers: [{ key: "Cache-Control", value: "s-maxage=0, stale-while-revalidate=5" }]
+    },
+    { 
+      urlPathPattern: "/_next/static",
+      headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }]
+    }
+  ],
+  frameworkSettings: {
+    vercel: {},
+    netlify: {}
+  }
+};
+
+interface BuildCommand {
+  command: string;
+  output?: string;
+}
+
+interface EnvVariables {
+  [key: string]: string | undefined;
+}
+
+interface HeaderRule {
+  source: string;
+  headers: Array<{ key: string; value: string }>;
+}
+
+interface CacheStrategy {
+  urlPathPattern: string;
+  headers: Array<{ key: string; value: string }>;
+}
+
+interface FrameworkSettings {
+  vercel?: Record<string, any>;
+  netlify?: Record<string, any>;
+}
+
+interface DeployConfig {
+  build: BuildCommand;
+  env: EnvVariables;
+  redirects: Array<{ from: string; to: string; status: number }>;
+  headers: Array<HeaderRule>;
+  cacheStrategies: Array<CacheStrategy>;
+  frameworkSettings: FrameworkSettings;
+}
+
+export const deployConfig: DeployConfig = {
+  build: {
+    command: "next build",
+    output: ".next"
+  },
+  env: {
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+    NEXT_PUBLIC_STRIPE_KEY: process.env.NEXT_PUBLIC_STRIPE_KEY
+  },
+  redirects: [
+    { from: "/old-url", to: "/new-url", status: 301 }
+  ],
+  headers: [
+    {
+      source: "/_next/*",
+      headers: [{ key: "Cache-Control", value: "s-maxage=1, stale-while-revalidate=5" }]
+    },
+    { 
+      source: "/*",
+      headers: [{ key: "Referrer-Policy", value: "strict-origin-when-cross-origin" }]
+    }
+  ],
+  cacheStrategies: [
+    {
+      urlPathPattern: "/api/",
+      headers: [{ key: "Cache-Control", value: "s-maxage=0, stale-while-revalidate=5" }]
+    },
+    { 
+      urlPathPattern: "/_next/static",
+      headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }]
+    }
+  ],
+  frameworkSettings: {
+    vercel: {},
+    netlify: {}
+  }
+};
